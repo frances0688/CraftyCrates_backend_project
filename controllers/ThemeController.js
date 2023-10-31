@@ -1,4 +1,5 @@
-const { Theme } = require("../models/index.js");
+const { Theme, Box, Product, Sequelize } = require("../models/index.js");
+const { Op } = Sequelize;
 
 const ThemeController = {
 	create(req, res) {
@@ -9,13 +10,37 @@ const ThemeController = {
 			.catch((err) => console.error(err));
 	},
 
+	getById(req, res) {
+		Theme.findByPk(req.params.id, {
+			include: [Box, Product],
+		})
+			.then((theme) => res.status(200).send(theme))
+			.catch((err) => console.error(err));
+	},
+
+	getOneByName(req, res) {
+		Theme.findOne({
+			where: {
+				theme_name: {
+					[Op.like]: `%${req.params.name}%`,
+				},
+			},
+			include: [Box, Product],
+		})
+			.then((theme) => res.status(200).send(theme))
+			.catch((err) => console.error(err));
+	},
+
 	async update(req, res) {
 		await Theme.update(req.body, {
 			where: {
 				id: req.params.id,
 			},
-		});
-		res.status(200).send({ message: "Theme updated successfully" });
+		})
+			.then((theme) =>
+				res.status(200).send({ message: "Theme updated successfully", theme })
+			)
+			.catch((err) => console.error(err));
 	},
 
 	async delete(req, res) {
@@ -23,8 +48,11 @@ const ThemeController = {
 			where: {
 				id: req.params.id,
 			},
-		});
-		res.status(200).send("Theme deleted successfully");
+		})
+			.then((theme) =>
+				res.status(200).send({ message: "Theme deleted successfully", theme })
+			)
+			.catch((err) => console.error(err));
 	},
 };
 
