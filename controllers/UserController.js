@@ -1,9 +1,14 @@
-const { User, Token } = require("../models/index.js");
+const {
+	User,
+	Token,
+	Sequelize,
+} = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/config.json")[
 	"development"
 ];
+const { Op } = Sequelize;
 
 const UserController = {
 	create(req, res) {
@@ -58,6 +63,31 @@ const UserController = {
 				token,
 			});
 		});
+	},
+
+	async logout(req, res) {
+		try {
+			await Token.destroy({
+				where: {
+					[Op.and]: [
+						{
+							UserId: req.user.id,
+						},
+						{
+							token: req.headers.authorization,
+						},
+					],
+				},
+			});
+			res.send({ message: "User logged out successfully" });
+		} catch (error) {
+			console.log(error);
+			res
+				.status(500)
+				.send({
+					message: "There was a problem trying to logout",
+				});
+		}
 	},
 };
 
