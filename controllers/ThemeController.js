@@ -17,6 +17,15 @@ const ThemeController = {
 		});
 		res.status(200).send({ message: "Theme updated successfully" });
 	},
+
+	async delete(req, res) {
+		await Theme.destroy({
+			where: {
+				id: req.params.id,
+			},
+		});
+		res.status(200).send("Theme deleted successfully");
+	},
 };
 
 module.exports = ThemeController;
