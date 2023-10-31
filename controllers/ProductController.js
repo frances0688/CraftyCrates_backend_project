@@ -8,6 +8,26 @@ const ProductController = {
 			)
 			.catch((err) => console.error(err));
 	},
+
+	async update(req, res) {
+		await Product.update(req.body, {
+			where: {
+				id: req.params.id,
+			},
+		})
+			.then(res.status(200).send({ message: "Product updated successfully" }))
+			.catch((err) => console.error(err));
+	},
+
+	async delete(req, res) {
+		await Product.destroy({
+			where: {
+				id: req.params.id,
+			},
+		})
+			.then(res.status(200).send({ message: "Product deleted successfully" }))
+			.catch((err) => console.error(err));
+	},
 };
 
 module.exports = ProductController;
