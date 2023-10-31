@@ -11,7 +11,6 @@ module.exports = {
 					"For those curious in learning a new craft, this box contains one (1) beginner le" +
 					"vel project",
 				createdAt: new Date(),
-
 				updatedAt: new Date(),
 			},
 			{
@@ -21,7 +20,6 @@ module.exports = {
 					"For the more experienced hobbyist, this box contains two (2) medium level diffic" +
 					"ulty projects",
 				createdAt: new Date(),
-
 				updatedAt: new Date(),
 			},
 			{
@@ -31,7 +29,6 @@ module.exports = {
 					"For the professional craftsman, this box contains three (3) expert level difficu" +
 					"lty projects",
 				createdAt: new Date(),
-
 				updatedAt: new Date(),
 			},
 		]);
