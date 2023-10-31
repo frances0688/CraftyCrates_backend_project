@@ -8,6 +8,15 @@ const ThemeController = {
 			)
 			.catch((err) => console.error(err));
 	},
+
+	async update(req, res) {
+		await Theme.update(req.body, {
+			where: {
+				id: req.params.id,
+			},
+		});
+		res.status(200).send({ message: "Theme updated successfully" });
+	},
 };
 
 module.exports = ThemeController;
