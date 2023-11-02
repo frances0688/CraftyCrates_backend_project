@@ -4,19 +4,37 @@ const { Op } = Sequelize;
 const ThemeController = {
 	create(req, res) {
 		Theme.create(req.body)
-			.then(
-				(theme) => theme.addProduct(req.body.ProductId).addBox(req.body.BoxId),
+			.then((theme) =>
 				res.status(201).send({ message: "Theme added successfully", theme })
 			)
 			.catch((err) => console.error(err));
 	},
 
-	getById(req, res) {
-		Theme.findByPk(req.params.id, {
-			include: [Box, Product],
-		})
-			.then((theme) => res.status(200).send(theme))
-			.catch((err) => console.error(err));
+	async getAll(req, res) {
+		try {
+			const themes = await Theme.findAll({
+				include: [
+					{
+						model: Product,
+						through: {
+							attributes: [],
+						},
+					},
+				],
+			});
+			res.send(themes);
+		} catch (error) {
+			console.error(error);
+		}
+	},
+
+	async getById(req, res) {
+		try {
+			const themes = await Theme.findByPk(req.params.id);
+			res.send(themes);
+		} catch (error) {
+			console.error(error);
+		}
 	},
 
 	getOneByName(req, res) {
@@ -26,7 +44,6 @@ const ThemeController = {
 					[Op.like]: `%${req.params.name}%`,
 				},
 			},
-			include: [Box, Product],
 		})
 			.then((theme) => res.status(200).send(theme))
 			.catch((err) => console.error(err));
