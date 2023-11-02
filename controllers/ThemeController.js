@@ -1,13 +1,13 @@
-const { Theme, Box, Product, Sequelize } = require("../models/index.js");
-const { Op } = Sequelize;
+const { Theme, Product } = require("../models/index.js");
 
 const ThemeController = {
-	create(req, res) {
-		Theme.create(req.body)
-			.then((theme) =>
-				res.status(201).send({ message: "Theme added successfully", theme })
-			)
-			.catch((err) => console.error(err));
+	async create(req, res) {
+		try {
+			const theme = await Theme.create(req.body);
+			res.status(201).send({ message: "Theme added successfully", theme });
+		} catch (error) {
+			console.error(error);
+		}
 	},
 
 	async getAll(req, res) {
@@ -30,47 +30,37 @@ const ThemeController = {
 
 	async getById(req, res) {
 		try {
-			const themes = await Theme.findByPk(req.params.id);
-			res.send(themes);
+			const theme = await Theme.findByPk(req.params.id);
+			res.send(theme);
 		} catch (error) {
 			console.error(error);
 		}
 	},
 
-	getOneByName(req, res) {
-		Theme.findOne({
-			where: {
-				theme_name: {
-					[Op.like]: `%${req.params.name}%`,
-				},
-			},
-		})
-			.then((theme) => res.status(200).send(theme))
-			.catch((err) => console.error(err));
-	},
-
 	async update(req, res) {
-		await Theme.update(req.body, {
-			where: {
-				id: req.params.id,
-			},
-		})
-			.then((theme) =>
-				res.status(200).send({ message: "Theme updated successfully", theme })
-			)
-			.catch((err) => console.error(err));
+		try {
+			const theme = await Theme.update(req.body, {
+				where: {
+					id: req.params.id,
+				},
+			});
+			res.send({ message: "Theme updated successfully", theme });
+		} catch (error) {
+			console.error(error);
+		}
 	},
 
 	async delete(req, res) {
-		await Theme.destroy({
-			where: {
-				id: req.params.id,
-			},
-		})
-			.then((theme) =>
-				res.status(200).send({ message: "Theme deleted successfully", theme })
-			)
-			.catch((err) => console.error(err));
+		try {
+			const theme = await Theme.destroy({
+				where: {
+					id: req.params.id,
+				},
+			});
+			res.send({ message: "Theme deleted successfully", theme });
+		} catch (error) {
+			console.error(error);
+		}
 	},
 };
 
