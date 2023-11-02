@@ -1,55 +1,103 @@
-const { Product, Box, Theme, Sequelize } = require("../models/index.js");
+const { Product, Theme, Sequelize } = require("../models/index.js");
 const { Op } = Sequelize;
 
 const ProductController = {
-	create(req, res) {
-		Product.create(req.body)
-			.then(
-				(product) => product.addTheme(req.body.ThemeId).addBox(req.body.BoxId),
-				res.status(201).send({ message: "Product added successfully", product })
-			)
-			.catch((err) => console.error(err));
-	},
-
-	getById(req, res) {
-		Product.findByPk(req.params.id, {
-			include: [Box, Theme],
-		})
-			.then((product) => res.status(200).send(product))
-			.catch((err) => console.error(err));
+	async create(req, res) {
+		try {
+			const product = await Product.create(req.body);
+			product.addTheme(req.body.ThemeId).addBox(req.body.BoxId),
+				res
+					.status(201)
+					.send({ message: "Product added successfully", product });
+		} catch (error) {
+			console.error(error);
+		}
 	},
 
 	async update(req, res) {
-		await Product.update(req.body, {
-			where: {
-				id: req.params.id,
-			},
-		})
-			.then(res.status(200).send({ message: "Product updated successfully" }))
-			.catch((err) => console.error(err));
+		try {
+			const product = await Product.update(req.body, {
+				where: {
+					id: req.params.id,
+				},
+			});
+			product.addTheme(req.body.ThemeId).addBox(req.body.BoxId),
+				res.send({ message: "Product updated successfully", product });
+		} catch (error) {
+			console.error(error);
+		}
 	},
 
-	getOneByName(req, res) {
-		Product.findOne({
-			where: {
-				product_name: {
-					[Op.like]: `%${req.params.name}%`,
+	async getAll(req, res) {
+		try {
+			const products = await Product.findAll({
+				include: [
+					{
+						model: Theme,
+						through: {
+							attributes: [],
+						},
+					},
+				],
+			});
+			res.send(products);
+		} catch (error) {
+			console.error(error);
+		}
+	},
+
+	async getById(req, res) {
+		try {
+			const product = await Product.findByPk(req.params.id, {
+				include: [
+					{
+						model: Theme,
+						through: {
+							attributes: [],
+						},
+					},
+				],
+			});
+			res.send(product);
+		} catch (error) {
+			console.error(error);
+		}
+	},
+
+	async getOneByName(req, res) {
+		try {
+			const product = await Product.findOne({
+				where: {
+					product_name: {
+						[Op.like]: `%${req.params.name}%`,
+					},
 				},
-			},
-			include: [Box, Theme],
-		})
-			.then((product) => res.status(200).send(product))
-			.catch((err) => console.error(err));
+				include: [
+					{
+						model: Theme,
+						through: {
+							attributes: [],
+						},
+					},
+				],
+			});
+			res.send(product);
+		} catch (error) {
+			console.error(error);
+		}
 	},
 
 	async delete(req, res) {
-		await Product.destroy({
-			where: {
-				id: req.params.id,
-			},
-		})
-			.then(res.status(200).send({ message: "Product deleted successfully" }))
-			.catch((err) => console.error(err));
+		try {
+			const product = await Product.destroy({
+				where: {
+					id: req.params.id,
+				},
+			});
+			res.send("Product deleted successfully");
+		} catch (error) {
+			console.error(error);
+		}
 	},
 };
 

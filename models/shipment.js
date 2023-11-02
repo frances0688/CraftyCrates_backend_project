@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Shipment.belongsTo(models.User);
-			// Shipment.hasOne(models.Theme);
-			Shipment.hasOne(models.Box);
+			Shipment.belongsTo(models.Theme);
+			Shipment.belongsTo(models.Box);
 		}
 	}
 	Shipment.init(
