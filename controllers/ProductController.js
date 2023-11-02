@@ -4,7 +4,8 @@ const { Op } = Sequelize;
 const ProductController = {
 	create(req, res) {
 		Product.create(req.body)
-			.then((product) =>
+			.then(
+				(product) => product.addTheme(req.body.ThemeId).addBox(req.body.BoxId),
 				res.status(201).send({ message: "Product added successfully", product })
 			)
 			.catch((err) => console.error(err));

@@ -31,6 +31,14 @@ module.exports = {
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
+			{
+				size: "Mystery Box",
+				price: 19.99,
+				description:
+					"Get two (2) random projects between beginner and medium level difficulty",
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
 		]);
 	},
 

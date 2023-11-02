@@ -4,7 +4,8 @@ const { Op } = Sequelize;
 const ThemeController = {
 	create(req, res) {
 		Theme.create(req.body)
-			.then((theme) =>
+			.then(
+				(theme) => theme.addProduct(req.body.ProductId).addBox(req.body.BoxId),
 				res.status(201).send({ message: "Theme added successfully", theme })
 			)
 			.catch((err) => console.error(err));
