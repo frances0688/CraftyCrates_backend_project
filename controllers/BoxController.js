@@ -51,6 +51,17 @@ const BoxController = {
 		}
 	},
 
+	async getPriceAsc(req, res) {
+		try {
+			const box = await Box.findAll({
+				order: [["price", "ASC"]],
+			});
+			res.send(box);
+		} catch (error) {
+			console.error(error);
+		}
+	},
+
 	async update(req, res) {
 		try {
 			const box = await Box.update(req.body, {
