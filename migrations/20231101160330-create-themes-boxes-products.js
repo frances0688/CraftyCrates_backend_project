@@ -9,10 +9,7 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			BoxId: {
-				type: Sequelize.INTEGER,
-			},
-			ThemeId: {
+			ThemeBoxId: {
 				type: Sequelize.INTEGER,
 			},
 			ProductId: {
