@@ -1,16 +1,32 @@
-const { Product, Theme, Sequelize } = require("../models/index.js");
+const { Product, Theme, Box, Sequelize } = require("../models/index.js");
 const { Op } = Sequelize;
 
 const ProductController = {
 	async create(req, res) {
 		try {
-			const product = await Product.create(req.body);
-			product.addTheme(req.body.ThemeId).addBox(req.body.BoxId),
-				res
-					.status(201)
-					.send({ message: "Product added successfully", product });
+			const { product_name, description, inventory_amount, ThemeId, BoxId } =
+				req.body;
+
+			const product = await Product.create({
+				product_name,
+				description,
+				inventory_amount,
+			});
+
+			await Promise.all([
+				product.addThemes(ThemeIds),
+				product.addBoxes(BoxIds),
+			]);
+			res
+				.status(201)
+				.send({
+					message: "New product created and associated with the theme and box.",
+				});
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while creating the product." });
 		}
 	},
 
@@ -21,8 +37,7 @@ const ProductController = {
 					id: req.params.id,
 				},
 			});
-			product.addTheme(req.body.ThemeId).addBox(req.body.BoxId),
-				res.send({ message: "Product updated successfully", product });
+			res.send({ message: "Product updated successfully", product });
 		} catch (error) {
 			console.error(error);
 		}
