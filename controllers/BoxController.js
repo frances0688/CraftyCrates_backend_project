@@ -1,4 +1,10 @@
-const { Box, Product, Theme, ThemesBoxes } = require("../models/index.js");
+const {
+	Box,
+	Product,
+	Theme,
+	ThemesBoxes,
+	themesBoxesProducts,
+} = require("../models/index.js");
 
 const BoxController = {
 	async create(req, res) {
@@ -23,16 +29,16 @@ const BoxController = {
 			const boxes = await Box.findAll({
 				include: [
 					{
-						model: ThemesBoxes, // Include the ThemesBoxes model
-						as: "BoxThemesBoxes", // Use the correct alias
+						model: ThemesBoxes,
+						as: "BoxThemesBoxes",
 						include: [
 							{
-								model: Theme, // Include the Theme model
-								attributes: ["theme_name"], // Include only the 'theme_name' attribute
+								model: Theme,
+								attributes: ["theme_name"],
 							},
 							{
-								model: Product, // Include the Product model
-								attributes: ["product_name"], // Include only the 'product_name' attribute
+								model: Product,
+								attributes: ["product_name"],
 							},
 						],
 					},
@@ -54,6 +60,9 @@ const BoxController = {
 			res.send(box);
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while getting box by id." });
 		}
 	},
 
@@ -63,11 +72,13 @@ const BoxController = {
 				where: {
 					price: req.params.price,
 				},
-				include: [Product],
 			});
 			res.send(box);
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while getting box by price." });
 		}
 	},
 
@@ -79,6 +90,12 @@ const BoxController = {
 			res.send(box);
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({
+					message:
+						"An error occurred while getting boxes in ascending price order.",
+				});
 		}
 	},
 
@@ -102,7 +119,25 @@ const BoxController = {
 					id: req.params.id,
 				},
 			});
-			res.send({ message: "Box deleted successfully", box });
+			const themeBox = await ThemesBoxes.findAll({
+				where: {
+					BoxId: req.params.id,
+				},
+			});
+			const deleteThemesBoxes = await themeBox.forEach((el) => {
+				themesBoxesProducts.destroy({
+					where: {
+						ThemesBoxThemeId: el.id,
+					},
+				});
+			});
+
+			await ThemesBoxes.destroy({
+				where: {
+					BoxId: req.params.id,
+				},
+			});
+			res.send({ message: "Box deleted successfully" });
 		} catch (error) {
 			console.error(error);
 		}
