@@ -23,16 +23,28 @@ const BoxController = {
 			const boxes = await Box.findAll({
 				include: [
 					{
-						model: Product,
-						through: {
-							attributes: [],
-						},
+						model: ThemesBoxes, // Include the ThemesBoxes model
+						as: "BoxThemesBoxes", // Use the correct alias
+						include: [
+							{
+								model: Theme, // Include the Theme model
+								attributes: ["theme_name"], // Include only the 'theme_name' attribute
+							},
+							{
+								model: Product, // Include the Product model
+								attributes: ["product_name"], // Include only the 'product_name' attribute
+							},
+						],
 					},
 				],
+				attributes: ["id", "size"],
 			});
 			res.send(boxes);
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while getting boxes." });
 		}
 	},
 
