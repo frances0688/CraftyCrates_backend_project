@@ -1,12 +1,23 @@
-const { Theme, Product } = require("../models/index.js");
+const { Theme, Product, ThemesBoxes } = require("../models/index.js");
 
 const ThemeController = {
 	async create(req, res) {
 		try {
-			const theme = await Theme.create(req.body);
-			res.status(201).send({ message: "Theme added successfully", theme });
+			const { theme_name, description, BoxId } = req.body;
+
+			const theme = await Theme.create({ theme_name, description });
+			const themesBoxes = await ThemesBoxes.create({
+				BoxId,
+				ThemeId: theme.id,
+			});
+			res
+				.status(201)
+				.send({ message: "Theme added successfully", theme, themesBoxes });
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while creating the theme." });
 		}
 	},
 

@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Theme.belongsToMany(models.Box, { through: models.ThemesBoxes });
+			Theme.hasMany(models.ThemesBoxes, { as: "ThemeThemesBoxes" });
 		}
 	}
 	Theme.init(

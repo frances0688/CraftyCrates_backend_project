@@ -24,6 +24,33 @@ const BoxController = {
 		}
 	},
 
+	async update(req, res) {
+		try {
+			const { size, description, price, ThemeId } = req.body;
+
+			const box = await Box.update(
+				{
+					size,
+					description,
+					price,
+				},
+				{
+					where: {
+						id: req.params.id,
+					},
+				}
+			);
+			const updatedBox = await Box.findByPk(req.params.id);
+			await updatedBox.addThemes(ThemeId);
+			res.send({ message: "Box updated successfully" });
+		} catch (error) {
+			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while updating the box." });
+		}
+	},
+
 	async getAll(req, res) {
 		try {
 			const boxes = await Box.findAll({
@@ -96,19 +123,6 @@ const BoxController = {
 					message:
 						"An error occurred while getting boxes in ascending price order.",
 				});
-		}
-	},
-
-	async update(req, res) {
-		try {
-			const box = await Box.update(req.body, {
-				where: {
-					id: req.params.id,
-				},
-			});
-			res.send("Box updated successfully");
-		} catch (error) {
-			console.error(error);
 		}
 	},
 
