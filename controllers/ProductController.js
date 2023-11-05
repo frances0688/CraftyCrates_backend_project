@@ -1,10 +1,16 @@
-const { Product, Theme, Box, Sequelize } = require("../models/index.js");
+const {
+	Product,
+	Theme,
+	Box,
+	ThemesBoxes,
+	Sequelize,
+} = require("../models/index.js");
 const { Op } = Sequelize;
 
 const ProductController = {
 	async create(req, res) {
 		try {
-			const { product_name, description, inventory_amount, ThemeId, BoxId } =
+			const { product_name, description, inventory_amount, ThemeBoxId } =
 				req.body;
 
 			const product = await Product.create({
@@ -12,11 +18,7 @@ const ProductController = {
 				description,
 				inventory_amount,
 			});
-
-			await Promise.all([
-				product.addThemes(ThemeIds),
-				product.addBoxes(BoxIds),
-			]);
+			await product.addThemesBox(ThemeBoxId);
 			res
 				.status(201)
 				.send({

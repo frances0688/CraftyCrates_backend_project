@@ -18,7 +18,7 @@ module.exports = {
 			UserId: {
 				type: Sequelize.INTEGER,
 			},
-			ThemeBoxId: {
+			ThemesBoxThemeId: {
 				type: Sequelize.INTEGER,
 			},
 			createdAt: {

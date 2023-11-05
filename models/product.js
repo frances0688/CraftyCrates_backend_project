@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			Product.belongsToMany(models.ThemesBoxes, {
 				through: models.themesBoxesProducts,
-				as: "ThemesBoxesProductsAssociation",
-			});
-			Product.hasMany(models.themesBoxesProducts, {
-				as: "ThemesBoxesProductsProductAssociation",
 			});
 		}
 	}

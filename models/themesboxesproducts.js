@@ -8,17 +8,13 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			themesBoxesProducts.belongsTo(models.Product, {
-				as: "ProductAssociation",
-			});
-			themesBoxesProducts.belongsTo(models.ThemesBoxes, {
-				as: "ThemesBoxesHasAssociation",
-			});
+			// themesBoxesProducts.belongsTo(models.Product);
+			// themesBoxesProducts.belongsTo(models.ThemesBoxes);
 		}
 	}
 	themesBoxesProducts.init(
 		{
-			ThemeBoxId: DataTypes.INTEGER,
+			ThemesBoxThemeId: DataTypes.INTEGER,
 			ProductId: DataTypes.INTEGER,
 		},
 		{ sequelize, modelName: "themesBoxesProducts" }
