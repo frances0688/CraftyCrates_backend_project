@@ -21,6 +21,32 @@ const ThemeController = {
 		}
 	},
 
+	async update(req, res) {
+		try {
+			const { theme_name, description, BoxId } = req.body;
+
+			const theme = await Theme.update(
+				{
+					theme_name,
+					description,
+				},
+				{
+					where: {
+						id: req.params.id,
+					},
+				}
+			);
+			const updatedTheme = await Theme.findByPk(req.params.id);
+			await updatedTheme.addBoxes(BoxId);
+			res.send({ message: "Theme updated successfully" });
+		} catch (error) {
+			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while updating the theme." });
+		}
+	},
+
 	async getAll(req, res) {
 		try {
 			const themes = await Theme.findAll({
@@ -43,19 +69,6 @@ const ThemeController = {
 		try {
 			const theme = await Theme.findByPk(req.params.id);
 			res.send(theme);
-		} catch (error) {
-			console.error(error);
-		}
-	},
-
-	async update(req, res) {
-		try {
-			const theme = await Theme.update(req.body, {
-				where: {
-					id: req.params.id,
-				},
-			});
-			res.send({ message: "Theme updated successfully", theme });
 		} catch (error) {
 			console.error(error);
 		}
