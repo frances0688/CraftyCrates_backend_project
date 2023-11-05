@@ -1,4 +1,10 @@
-const { Theme, Product, ThemesBoxes } = require("../models/index.js");
+const {
+	Theme,
+	Product,
+	Box,
+	ThemesBoxes,
+	themesBoxesProducts,
+} = require("../models/index.js");
 
 const ThemeController = {
 	async create(req, res) {
@@ -52,16 +58,28 @@ const ThemeController = {
 			const themes = await Theme.findAll({
 				include: [
 					{
-						model: Product,
-						through: {
-							attributes: [],
-						},
+						model: ThemesBoxes,
+						as: "ThemeThemesBoxes",
+						include: [
+							{
+								model: Box,
+								attributes: ["size", "price"],
+							},
+							{
+								model: Product,
+								attributes: ["product_name"],
+							},
+						],
 					},
 				],
+				attributes: ["id", "theme_name"],
 			});
 			res.send(themes);
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while getting themes." });
 		}
 	},
 
@@ -81,9 +99,29 @@ const ThemeController = {
 					id: req.params.id,
 				},
 			});
-			res.send({ message: "Theme deleted successfully", theme });
+			const themeBox = await ThemesBoxes.findAll({
+				where: {
+					ThemeId: req.params.id,
+				},
+			});
+			const deleteThemesBoxes = await themeBox.forEach((el) => {
+				themesBoxesProducts.destroy({
+					where: {
+						ThemesBoxThemeId: el.id,
+					},
+				});
+			});
+			await ThemesBoxes.destroy({
+				where: {
+					ThemeId: req.params.id,
+				},
+			});
+			res.send({ message: "Theme deleted successfully." });
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while deleting theme." });
 		}
 	},
 };

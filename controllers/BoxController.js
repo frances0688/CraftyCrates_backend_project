@@ -151,9 +151,12 @@ const BoxController = {
 					BoxId: req.params.id,
 				},
 			});
-			res.send({ message: "Box deleted successfully" });
+			res.send({ message: "Box deleted successfully." });
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while deleting box." });
 		}
 	},
 };
