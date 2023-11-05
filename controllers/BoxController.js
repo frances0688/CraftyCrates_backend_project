@@ -1,12 +1,20 @@
-const { Box, Product, Theme } = require("../models/index.js");
+const { Box, Product, Theme, ThemesBoxes } = require("../models/index.js");
 
 const BoxController = {
 	async create(req, res) {
 		try {
-			const box = await Box.create(req.body);
-			res.status(201).send({ message: "Box added successfully", box });
+			const { size, price, description, ThemeId } = req.body;
+
+			const box = await Box.create({ size, price, description });
+			const themesBoxes = await ThemesBoxes.create({ ThemeId, BoxId: box.id });
+			res
+				.status(201)
+				.send({ message: "Box added successfully", box, themesBoxes });
 		} catch (error) {
 			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while creating the box." });
 		}
 	},
 

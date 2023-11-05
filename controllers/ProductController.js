@@ -1,7 +1,6 @@
 const {
 	Product,
 	Theme,
-	Box,
 	ThemesBoxes,
 	themesBoxesProducts,
 	Sequelize,
