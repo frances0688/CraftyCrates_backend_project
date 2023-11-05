@@ -8,6 +8,6 @@ router.put("/:id", authentication, isAdmin, ProductController.update);
 router.delete("/:id", authentication, isAdmin, ProductController.delete);
 router.get("/", ProductController.getAll);
 router.get("/id/:id", ProductController.getById);
-router.get("/name/:name", ProductController.getOneByName);
+router.get("/name/:name", ProductController.getByName);
 
 module.exports = router;

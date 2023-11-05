@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {
 	Theme,
 	Product,
@@ -92,6 +93,26 @@ const ThemeController = {
 		}
 	},
 
+	async getByName(req, res) {
+		try {
+			const theme = await Theme.findAll({
+				where: {
+					theme_name: {
+						[Op.like]: `%${req.params.name}%`,
+					},
+				},
+			});
+			res.send(theme);
+		} catch (error) {
+			console.error(error);
+			res
+				.status(500)
+				.send({
+					message: "An error occurred while getting the theme by name.",
+				});
+		}
+	},
+
 	async delete(req, res) {
 		try {
 			const theme = await Theme.destroy({
@@ -99,18 +120,21 @@ const ThemeController = {
 					id: req.params.id,
 				},
 			});
-			const themeBox = await ThemesBoxes.findAll({
+			const themeBoxes = await ThemesBoxes.findAll({
 				where: {
 					ThemeId: req.params.id,
 				},
+				attributes: ["id"],
 			});
-			const deleteThemesBoxes = await themeBox.forEach((el) => {
-				themesBoxesProducts.destroy({
-					where: {
-						ThemesBoxThemeId: el.id,
-					},
-				});
-			});
+			await Promise.all(
+				themeBoxes.map(async (themeBox) => {
+					await themesBoxesProducts.destroy({
+						where: {
+							ThemesBoxThemeId: themeBox.id,
+						},
+					});
+				})
+			);
 			await ThemesBoxes.destroy({
 				where: {
 					ThemeId: req.params.id,

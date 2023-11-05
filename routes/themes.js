@@ -8,5 +8,6 @@ router.put("/:id", authentication, isAdmin, ThemeController.update);
 router.delete("/:id", authentication, isAdmin, ThemeController.delete);
 router.get("/", ThemeController.getAll);
 router.get("/id/:id", ThemeController.getById);
+router.get("/name/:name", ThemeController.getByName);
 
 module.exports = router;

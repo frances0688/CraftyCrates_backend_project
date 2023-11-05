@@ -99,7 +99,7 @@ const ProductController = {
 		}
 	},
 
-	async getOneByName(req, res) {
+	async getByName(req, res) {
 		try {
 			const product = await Product.findAll({
 				where: {

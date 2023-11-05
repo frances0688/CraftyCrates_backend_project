@@ -133,19 +133,21 @@ const BoxController = {
 					id: req.params.id,
 				},
 			});
-			const themeBox = await ThemesBoxes.findAll({
+			const themeBoxes = await ThemesBoxes.findAll({
 				where: {
 					BoxId: req.params.id,
 				},
+				attributes: ["id"],
 			});
-			const deleteThemesBoxes = await themeBox.forEach((el) => {
-				themesBoxesProducts.destroy({
-					where: {
-						ThemesBoxThemeId: el.id,
-					},
-				});
-			});
-
+			await Promise.all(
+				themeBoxes.map(async (themeBox) => {
+					await themesBoxesProducts.destroy({
+						where: {
+							ThemesBoxThemeId: themeBox.id,
+						},
+					});
+				})
+			);
 			await ThemesBoxes.destroy({
 				where: {
 					BoxId: req.params.id,
