@@ -8,7 +8,7 @@ const {
 const { Op } = Sequelize;
 
 const ProductController = {
-	async create(req, res) {
+	async create(req, res, next) {
 		try {
 			const { product_name, description, inventory_amount, ThemesBoxId } =
 				req.body;
@@ -26,9 +26,7 @@ const ProductController = {
 				});
 		} catch (error) {
 			console.error(error);
-			res
-				.status(500)
-				.send({ message: "An error occurred while creating the product." });
+			next(error);
 		}
 	},
 
