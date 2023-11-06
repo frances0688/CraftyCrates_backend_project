@@ -8,17 +8,50 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			User.hasMany(models.Shipment);
 			User.hasMany(models.Token);
 		}
 	}
 	User.init(
 		{
-			user_name: DataTypes.STRING,
-			email: DataTypes.STRING,
-			password: DataTypes.STRING,
-			phone: DataTypes.INTEGER,
-			shipping_address: DataTypes.STRING,
+			user_name: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: {
+						msg: "Please enter your name.",
+					},
+				},
+			},
+			email: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: {
+						msg: "Please enter an email address.",
+					},
+					isEmail: {
+						msg: "Please enter a valid email.",
+					},
+				},
+			},
+			password: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: {
+						msg: "Please enter a password.",
+					},
+				},
+			},
+			shipping_address: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: {
+						msg: "Please enter a shipping address.",
+					},
+				},
+			},
 			role: DataTypes.STRING,
 		},
 		{ sequelize, modelName: "User" }
