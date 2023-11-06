@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Order.belongsTo(models.User);
-			Order.hasOne(models.ThemesBoxes);
+			Order.belongsTo(models.ThemesBox);
 		}
 	}
 	Order.init(
 		{
 			UserId: DataTypes.INTEGER,
-			ThemeBoxId: DataTypes.INTEGER,
+			ThemesBoxThemeId: DataTypes.INTEGER,
 		},
 		{ sequelize, modelName: "Order" }
 	);

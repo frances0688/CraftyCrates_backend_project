@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			Theme.belongsToMany(models.Box, { through: models.ThemesBoxes });
-			Theme.hasMany(models.ThemesBoxes, { as: "ThemeThemesBoxes" });
+			Theme.belongsToMany(models.Box, { through: models.ThemesBox });
+			Theme.hasMany(models.ThemesBox, { as: "ThemeThemesBoxes" });
 		}
 	}
 	Theme.init(
