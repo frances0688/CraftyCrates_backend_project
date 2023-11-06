@@ -10,7 +10,7 @@ const { Op } = Sequelize;
 const ProductController = {
 	async create(req, res) {
 		try {
-			const { product_name, description, inventory_amount, ThemesBoxThemeId } =
+			const { product_name, description, inventory_amount, ThemesBoxId } =
 				req.body;
 
 			const product = await Product.create({
@@ -18,7 +18,7 @@ const ProductController = {
 				description,
 				inventory_amount,
 			});
-			await product.addThemesBox(ThemesBoxThemeId);
+			await product.addThemesBox(ThemesBoxId);
 			res
 				.status(201)
 				.send({
@@ -34,7 +34,7 @@ const ProductController = {
 
 	async update(req, res) {
 		try {
-			const { product_name, description, inventory_amount, ThemesBoxThemeId } =
+			const { product_name, description, inventory_amount, ThemesBoxId } =
 				req.body;
 
 			const product = await Product.update(
@@ -50,7 +50,7 @@ const ProductController = {
 				}
 			);
 			const updatedProduct = await Product.findByPk(req.params.id);
-			await updatedProduct.setThemesBoxes([ThemesBoxThemeId]);
+			await updatedProduct.setThemesBoxes([ThemesBoxId]);
 			res.send({ message: "Product updated successfully" });
 		} catch (error) {
 			console.error(error);

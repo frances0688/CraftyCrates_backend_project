@@ -1,4 +1,13 @@
-const { User, Token, Sequelize } = require("../models/index.js");
+const {
+	User,
+	Token,
+	Sequelize,
+	Box,
+	Order,
+	Theme,
+	ThemesBox,
+	Product,
+} = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/config.json")["development"];
@@ -20,12 +29,13 @@ const UserController = {
 		}
 	},
 
-	login(req, res) {
-		User.findOne({
-			where: {
-				email: req.body.email,
-			},
-		}).then((user) => {
+	async login(req, res) {
+		try {
+			const user = await User.findOne({
+				where: {
+					email: req.body.email,
+				},
+			});
 			if (!user) {
 				return res.status(400).send({ message: "User does not exist" });
 			}
@@ -45,7 +55,53 @@ const UserController = {
 				user,
 				token,
 			});
-		});
+		} catch (error) {
+			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while trying to login." });
+		}
+	},
+
+	async getInfo(req, res) {
+		try {
+			const token = req.headers.authorization;
+			const payload = jwt.verify(token, jwt_secret);
+			const UserId = payload.id;
+
+			const userInfo = await User.findByPk(UserId, {
+				include: [
+					{
+						model: Order,
+						include: [
+							{
+								model: ThemesBox,
+								include: [
+									{
+										model: Theme,
+										attributes: ["theme_name"],
+									},
+									{
+										model: Box,
+										attributes: ["size"],
+									},
+									{
+										model: Product,
+										attributes: ["product_name"],
+									},
+								],
+							},
+						],
+					},
+				],
+			});
+			res.status(201).send(userInfo);
+		} catch (error) {
+			console.error(error);
+			res
+				.status(500)
+				.send({ message: "An error occurred while getting user information." });
+		}
 	},
 
 	async logout(req, res) {

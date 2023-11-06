@@ -15,9 +15,9 @@ const OrderController = {
 			const token = req.headers.authorization;
 			const payload = jwt.verify(token, jwt_secret);
 			const UserId = payload.id;
-			const { ThemesBoxThemeId } = req.body;
+			const { ThemesBoxId } = req.body;
 
-			const order = await Order.create({ UserId, ThemesBoxThemeId });
+			const order = await Order.create({ UserId, ThemesBoxId });
 			res.status(201).send({ message: "New order created.", order });
 		} catch (error) {
 			console.error(error);
@@ -64,7 +64,31 @@ const OrderController = {
 
 	async getById(req, res) {
 		try {
-			const order = await Order.findByPk(req.params.id);
+			const order = await Order.findByPk(req.params.id, {
+				include: [
+					{
+						model: User,
+						attributes: ["user_name"],
+					},
+					{
+						model: ThemesBox,
+						include: [
+							{
+								model: Theme,
+								attributes: ["theme_name"],
+							},
+							{
+								model: Box,
+								attributes: ["size"],
+							},
+							{
+								model: Product,
+								attributes: ["product_name"],
+							},
+						],
+					},
+				],
+			});
 			res.send(order);
 		} catch (error) {
 			console.error(error);
@@ -80,7 +104,7 @@ const OrderController = {
 					id: req.params.id,
 				},
 			});
-			res.send("Order deleted successfully.");
+			res.send({ message: "Order deleted successfully." });
 		} catch (error) {
 			console.error(error);
 			res
