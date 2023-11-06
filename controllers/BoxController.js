@@ -2,7 +2,7 @@ const {
 	Box,
 	Product,
 	Theme,
-	ThemesBoxes,
+	ThemesBox,
 	themesBoxesProducts,
 } = require("../models/index.js");
 
@@ -12,7 +12,7 @@ const BoxController = {
 			const { size, price, description, ThemeId } = req.body;
 
 			const box = await Box.create({ size, price, description });
-			const themesBoxes = await ThemesBoxes.create({ ThemeId, BoxId: box.id });
+			const themesBoxes = await ThemesBox.create({ ThemeId, BoxId: box.id });
 			res
 				.status(201)
 				.send({ message: "Box added successfully", box, themesBoxes });
@@ -56,7 +56,7 @@ const BoxController = {
 			const boxes = await Box.findAll({
 				include: [
 					{
-						model: ThemesBoxes,
+						model: ThemesBox,
 						as: "BoxThemesBoxes",
 						include: [
 							{
@@ -133,7 +133,7 @@ const BoxController = {
 					id: req.params.id,
 				},
 			});
-			const themeBoxes = await ThemesBoxes.findAll({
+			const themeBoxes = await ThemesBox.findAll({
 				where: {
 					BoxId: req.params.id,
 				},
@@ -148,7 +148,7 @@ const BoxController = {
 					});
 				})
 			);
-			await ThemesBoxes.destroy({
+			await ThemesBox.destroy({
 				where: {
 					BoxId: req.params.id,
 				},

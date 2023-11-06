@@ -10,11 +10,9 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			ThemesBox.belongsTo(models.Theme);
 			ThemesBox.belongsTo(models.Box);
-			ThemesBox.hasOne(models.Order);
 			ThemesBox.belongsToMany(models.Product, {
 				through: models.themesBoxesProducts,
 			});
-			// ThemesBoxes.hasMany(models.themesBoxesProducts);
 		}
 	}
 	ThemesBox.init(

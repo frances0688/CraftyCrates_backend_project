@@ -1,7 +1,7 @@
 const {
 	Product,
 	Theme,
-	ThemesBoxes,
+	ThemesBox,
 	themesBoxesProducts,
 	Sequelize,
 } = require("../models/index.js");
@@ -10,7 +10,7 @@ const { Op } = Sequelize;
 const ProductController = {
 	async create(req, res) {
 		try {
-			const { product_name, description, inventory_amount, ThemeBoxId } =
+			const { product_name, description, inventory_amount, ThemesBoxThemeId } =
 				req.body;
 
 			const product = await Product.create({
@@ -18,7 +18,7 @@ const ProductController = {
 				description,
 				inventory_amount,
 			});
-			await product.addThemesBox(ThemeBoxId);
+			await product.addThemesBox(ThemesBoxThemeId);
 			res
 				.status(201)
 				.send({
@@ -34,7 +34,7 @@ const ProductController = {
 
 	async update(req, res) {
 		try {
-			const { product_name, description, inventory_amount, ThemeBoxId } =
+			const { product_name, description, inventory_amount, ThemesBoxThemeId } =
 				req.body;
 
 			const product = await Product.update(
@@ -50,7 +50,7 @@ const ProductController = {
 				}
 			);
 			const updatedProduct = await Product.findByPk(req.params.id);
-			await updatedProduct.setThemesBoxes([ThemeBoxId]);
+			await updatedProduct.setThemesBoxes([ThemesBoxThemeId]);
 			res.send({ message: "Product updated successfully" });
 		} catch (error) {
 			console.error(error);
@@ -65,7 +65,7 @@ const ProductController = {
 			const products = await Product.findAll({
 				include: [
 					{
-						model: ThemesBoxes,
+						model: ThemesBox,
 						include: [
 							{
 								model: Theme,

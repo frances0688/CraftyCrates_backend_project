@@ -3,7 +3,7 @@ const {
 	Theme,
 	Product,
 	Box,
-	ThemesBoxes,
+	ThemesBox,
 	themesBoxesProducts,
 } = require("../models/index.js");
 
@@ -13,10 +13,7 @@ const ThemeController = {
 			const { theme_name, description, BoxId } = req.body;
 
 			const theme = await Theme.create({ theme_name, description });
-			const themesBoxes = await ThemesBoxes.create({
-				BoxId,
-				ThemeId: theme.id,
-			});
+			const themesBoxes = await ThemesBox.create({ BoxId, ThemeId: theme.id });
 			res
 				.status(201)
 				.send({ message: "Theme added successfully", theme, themesBoxes });
@@ -59,7 +56,7 @@ const ThemeController = {
 			const themes = await Theme.findAll({
 				include: [
 					{
-						model: ThemesBoxes,
+						model: ThemesBox,
 						as: "ThemeThemesBoxes",
 						include: [
 							{
@@ -120,7 +117,7 @@ const ThemeController = {
 					id: req.params.id,
 				},
 			});
-			const themeBoxes = await ThemesBoxes.findAll({
+			const themeBoxes = await ThemesBox.findAll({
 				where: {
 					ThemeId: req.params.id,
 				},
@@ -135,7 +132,7 @@ const ThemeController = {
 					});
 				})
 			);
-			await ThemesBoxes.destroy({
+			await ThemesBox.destroy({
 				where: {
 					ThemeId: req.params.id,
 				},

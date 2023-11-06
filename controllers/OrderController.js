@@ -36,9 +36,20 @@ const OrderController = {
 					},
 					{
 						model: ThemesBox,
-						// include: [ 	{ 		model: Theme, 		attributes: ["theme_name"], 	}, 	{ 		model:
-						// Box, 		attributes: ["size"], 	}, 	{ 		model: Product, 		attributes:
-						// ["product_name"], 	}, ],
+						include: [
+							{
+								model: Theme,
+								attributes: ["theme_name"],
+							},
+							{
+								model: Box,
+								attributes: ["size"],
+							},
+							{
+								model: Product,
+								attributes: ["product_name"],
+							},
+						],
 					},
 				],
 			});
@@ -50,6 +61,7 @@ const OrderController = {
 				.send({ message: "An error occurred while getting all orders." });
 		}
 	},
+
 	async getById(req, res) {
 		try {
 			const order = await Order.findByPk(req.params.id);

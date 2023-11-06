@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// themesBoxesProducts.belongsTo(models.Product);
-			// themesBoxesProducts.belongsTo(models.ThemesBoxes);
+			// themesBoxesProducts.belongsTo(models.ThemesBox);
 		}
 	}
 	themesBoxesProducts.init(
