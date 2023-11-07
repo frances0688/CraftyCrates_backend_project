@@ -3,7 +3,7 @@
  <h3 align="center">CraftyCrates</h3>
 
   <p align="center">
-    Multiple choice Quiz Game made using HTML, CSS, Javascript, and calls to an API with Axios.
+    This project consists on the creation of an online store (e-commerce) using the knowledge acquired in Node and Express technologies, along with MySQL and Sequelize ORM.
     <br />
     <a href="https://github.com/frances0688/CraftyCrates_backend_project"><strong>Explore the documents »</strong></a>
     <br />
@@ -20,7 +20,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#views">Views</a></li>
+        <li><a href="#overview">Overview</a></li>
          <li><a href="#built-with">Built With</a></li>
       </ul>   
     </li>
@@ -41,55 +41,53 @@
 
 ## Preview
 
-- General overview gif
+- Postman create product endpoint overview gif
 
 <img style="display: block; 
            margin-left: auto;
            margin-right: auto;" 
-      src=# 
+      src='./assets/Postman_CreateProduct.gif'
       alt="alt"/>
 
 <!-- ABOUT THE OBJECTIVES -->
 
 ## Objectives
 
-### The purpose of this project is creating a quiz game application using the knowledge gained throughout the bootcamp as of now and fulfilling the following requirements:
+### Create a e-commerce API fulfilling the following requirements:
 
-- DOM manipulation
-- Creation of a Single Page Application (SPA) to present the content
-- Usage of ES6
-- Asynchronous requests to an API
-- Usage of Bootstrap framework
-- Practice to improve and increase Git knowledge
+ <ul>
+    <li>User registration using <a href="https://www.npmjs.com/package/bcrypt">Bcrypt.</a></li>
+    <li>User login + token + middleware.</a></li>
+    <li>Admin role verification and permissions middleware.</a></li>
+    <li>CRUD endpoints.</a></li>
+    <li>Implement validations in user and product creation to eliminate possibility of null data fields</a></li>
+    <li>At least one Many to Many relationship and another One to Many.</a></li>
+    <li>Use of seeders.</a></li>
+  </ul>
 
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
 
-This project consists on the creation of a quiz game application and showing the right and wrong answers.
+The online store (E-commerce) CraftyCrates sells boxes of multiple sizes containing different products of a specific hobby theme or category.  The boxes may contain 1-3 products depending on size, and price is determined by box size chosen.
 
-- The quiz consists on 10 questions. The questions are displayed one at a time, they have 4 possible answers, and only one of them is correct.
-- The resulting score is displayed at the end of the game.
-- All questions are retrieved making requests to the https://opentdb.com/ API.
-- The application is a SPA (single-page application).
-- The styling was created with Bootstrap framework.
+- The online store consists of 6 entities of multiple types of relationships (1:1, 1:N, M:M).  It also includes a super M:M relationship where 2 intermediate tables are called to access all information.
+- Users can register, login, view products and themes, create an order selecting the box size and theme, and view their orders with products included in the box.
+- Admin has permission to execute all endpoints, including the deletion of users, creation of new products,themes, and box sizes, and view of all created orders.
+
 
 <p align="right">(<a href="#backend-project-e-commerce">back to top</a>)</p>
 
-### Views
+### Overview
 
-<views>
+<overview>
   <ol>
-    <li>Home</li>
-    <img src='./img/Home_view.png' alt="home view" style="height: 50vh"/>
-    <li>Categories</li>
-    <img src='./img/Categories_view.png' alt="categories view" style="height: 50vh"/>
-    <li>Game</li>
-    <img src='./img/Play_view.png' alt="game view" style="height: 50vh"/>
-    <li>Results</li>
-    <img src='./img/Results_view.png' alt="results view" style="height: 50vh"/>
+    <li>MySQL general overview</li>
+    <img src='./assets/SQLWorkbench.png' alt="SQL Workbench overview" style="height: 50vh"/></br>
+    <li>SQL tables and relationships diagram</li>
+    <img src='./assets/CraftyCrates_SQL_diagram.png' alt="SQL tables diagram" style="height: 75vh"/>
   </ol>
-</views>
+</overview>
 
 <p align="right">(<a href="#backend-project-e-commerce">back to top</a>)</p>
 
@@ -98,6 +96,8 @@ This project consists on the creation of a quiz game application and showing the
 * [![Node][Node.JS]][Node.JS-url]
 * [![Express][Express.js]][Express.js-url]
 * [![MySQL][MySQL]][MySQL-url]
+* [![Sequelize][Sequelize]][Sequelize-url]
+* [![JWT][JWT]][JWT-url]
 * [![Postman][Postman]][Postman-url]
 
 <p align="right">(<a href="#backend-project-e-commerce">back to top</a>)</p>
@@ -184,7 +184,6 @@ Developed by [Frances Morales Velilla](https://github.com/frances0688)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/frances-morales
-[product-screenshot]: images/screenshot.png
 [HTML5]: https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white
 [HTML5-url]: https://developer.mozilla.org/en-US/docs/Glossary/HTML5
 [CSS3]: https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white
@@ -195,6 +194,8 @@ Developed by [Frances Morales Velilla](https://github.com/frances0688)
 [Bootstrap-url]: https://getbootstrap.com/
 [MySQL]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
 [MySQL-url]: https://www.mysql.com/
+[Sequelize]: https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white
+[Sequelize-url]: https://sequelize.org/
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
