@@ -5,7 +5,7 @@ const {
 	Box,
 	Order,
 	Theme,
-	ThemesBox,
+	Combination,
 	Product,
 } = require("../models/index.js");
 const bcrypt = require("bcryptjs");
@@ -75,7 +75,7 @@ const UserController = {
 						model: Order,
 						include: [
 							{
-								model: ThemesBox,
+								model: Combination,
 								include: [
 									{
 										model: Theme,
@@ -83,7 +83,7 @@ const UserController = {
 									},
 									{
 										model: Box,
-										attributes: ["size"],
+										attributes: ["size", "price"],
 									},
 									{
 										model: Product,

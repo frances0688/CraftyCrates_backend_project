@@ -12,7 +12,7 @@ module.exports = {
 			UserId: {
 				type: Sequelize.INTEGER,
 			},
-			ThemesBoxId: {
+			CombinationId: {
 				type: Sequelize.INTEGER,
 			},
 			createdAt: {

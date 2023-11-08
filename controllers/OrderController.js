@@ -1,7 +1,7 @@
 const {
 	Order,
 	User,
-	ThemesBox,
+	Combination,
 	Theme,
 	Box,
 	Product,
@@ -15,9 +15,9 @@ const OrderController = {
 			const token = req.headers.authorization;
 			const payload = jwt.verify(token, jwt_secret);
 			const UserId = payload.id;
-			const { ThemesBoxId } = req.body;
+			const { CombinationId } = req.body;
 
-			const order = await Order.create({ UserId, ThemesBoxId });
+			const order = await Order.create({ UserId, CombinationId });
 			res.status(201).send({ message: "New order created.", order });
 		} catch (error) {
 			console.error(error);
@@ -35,7 +35,7 @@ const OrderController = {
 						attributes: ["user_name"],
 					},
 					{
-						model: ThemesBox,
+						model: Combination,
 						include: [
 							{
 								model: Theme,
@@ -43,7 +43,7 @@ const OrderController = {
 							},
 							{
 								model: Box,
-								attributes: ["size"],
+								attributes: ["size", "price"],
 							},
 							{
 								model: Product,
@@ -71,7 +71,7 @@ const OrderController = {
 						attributes: ["user_name"],
 					},
 					{
-						model: ThemesBox,
+						model: Combination,
 						include: [
 							{
 								model: Theme,
@@ -79,7 +79,7 @@ const OrderController = {
 							},
 							{
 								model: Box,
-								attributes: ["size"],
+								attributes: ["size", "price"],
 							},
 							{
 								model: Product,

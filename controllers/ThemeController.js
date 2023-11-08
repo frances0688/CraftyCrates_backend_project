@@ -3,8 +3,8 @@ const {
 	Theme,
 	Product,
 	Box,
-	ThemesBox,
-	themesBoxesProducts,
+	Combination,
+	CombinationProduct,
 } = require("../models/index.js");
 
 const ThemeController = {
@@ -13,10 +13,13 @@ const ThemeController = {
 			const { theme_name, description, BoxId } = req.body;
 
 			const theme = await Theme.create({ theme_name, description });
-			const themesBoxes = await ThemesBox.create({ BoxId, ThemeId: theme.id });
+			const combinations = await Combination.create({
+				BoxId,
+				ThemeId: theme.id,
+			});
 			res
 				.status(201)
-				.send({ message: "Theme added successfully", theme, themesBoxes });
+				.send({ message: "Theme added successfully", theme, combinations });
 		} catch (error) {
 			console.error(error);
 			res
@@ -56,8 +59,8 @@ const ThemeController = {
 			const themes = await Theme.findAll({
 				include: [
 					{
-						model: ThemesBox,
-						as: "ThemeThemesBoxes",
+						model: Combination,
+						as: "ThemeCombination",
 						include: [
 							{
 								model: Box,
@@ -117,22 +120,22 @@ const ThemeController = {
 					id: req.params.id,
 				},
 			});
-			const themeBoxes = await ThemesBox.findAll({
+			const combinations = await Combination.findAll({
 				where: {
 					ThemeId: req.params.id,
 				},
 				attributes: ["id"],
 			});
 			await Promise.all(
-				themeBoxes.map(async (themeBox) => {
-					await themesBoxesProducts.destroy({
+				combinations.map(async (combination) => {
+					await CombinationProduct.destroy({
 						where: {
-							ThemesBoxThemeId: themeBox.id,
+							CombinationId: combination.id,
 						},
 					});
 				})
 			);
-			await ThemesBox.destroy({
+			await Combination.destroy({
 				where: {
 					ThemeId: req.params.id,
 				},

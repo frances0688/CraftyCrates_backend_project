@@ -8,12 +8,17 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			Box.belongsToMany(models.Theme, { through: models.ThemesBox });
-			Box.hasMany(models.ThemesBox, { as: "BoxThemesBoxes" });
+			Box.belongsToMany(models.Theme, { through: models.Combination });
+			Box.hasMany(models.Combination, { as: "BoxCombination" });
 		}
 	}
 	Box.init(
 		{
+			id: {
+				type: DataTypes.INTEGER,
+				primaryKey: true,
+				autoIncrement: true,
+			},
 			size: DataTypes.STRING,
 			price: DataTypes.FLOAT(10, 2),
 			description: DataTypes.STRING,

@@ -1,8 +1,8 @@
 const {
 	Product,
 	Theme,
-	ThemesBox,
-	themesBoxesProducts,
+	Combination,
+	CombinationProduct,
 	Sequelize,
 } = require("../models/index.js");
 const { Op } = Sequelize;
@@ -10,7 +10,7 @@ const { Op } = Sequelize;
 const ProductController = {
 	async create(req, res, next) {
 		try {
-			const { product_name, description, inventory_amount, ThemesBoxId } =
+			const { product_name, description, inventory_amount, CombinationId } =
 				req.body;
 
 			const product = await Product.create({
@@ -18,7 +18,7 @@ const ProductController = {
 				description,
 				inventory_amount,
 			});
-			await product.addThemesBox(ThemesBoxId);
+			await product.addCombination(CombinationId);
 			res
 				.status(201)
 				.send({
@@ -32,7 +32,7 @@ const ProductController = {
 
 	async update(req, res) {
 		try {
-			const { product_name, description, inventory_amount, ThemesBoxId } =
+			const { product_name, description, inventory_amount, CombinationId } =
 				req.body;
 
 			const product = await Product.update(
@@ -48,7 +48,7 @@ const ProductController = {
 				}
 			);
 			const updatedProduct = await Product.findByPk(req.params.id);
-			await updatedProduct.setThemesBoxes([ThemesBoxId]);
+			await updatedProduct.setCombinations([CombinationId]);
 			res.send({ message: "Product updated successfully" });
 		} catch (error) {
 			console.error(error);
@@ -63,13 +63,14 @@ const ProductController = {
 			const products = await Product.findAll({
 				include: [
 					{
-						model: ThemesBox,
+						model: Combination,
 						include: [
 							{
 								model: Theme,
 								attributes: ["theme_name"],
 							},
 						],
+						attributes: ["id"],
 					},
 				],
 				attributes: ["id", "product_name"],
@@ -124,7 +125,7 @@ const ProductController = {
 					id: req.params.id,
 				},
 			});
-			await themesBoxesProducts.destroy({
+			await CombinationProduct.destroy({
 				where: {
 					ProductId: req.params.id,
 				},
