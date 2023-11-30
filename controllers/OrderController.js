@@ -13,7 +13,7 @@ const {jwt_secret} = require("../config/config.json")["development"];
 const OrderController = {
 				async getCombinationId(req, res) {
 								try {
-												const {ThemeId, BoxId} = req.body;
+												const {ThemeId, BoxId} = req.query;
 												const combinationId = await Combination.findOne({
 																where: {
 																				ThemeId: ThemeId,
@@ -22,7 +22,7 @@ const OrderController = {
 												});
 												res
 																.status(201)
-																.send({message: "Combination ID", combinationId: combinationId.id});
+																.send({message: "Combination ID", CombinationId: combinationId.id});
 								} catch (error) {
 												console.error(error);
 												res
@@ -31,7 +31,7 @@ const OrderController = {
 								}
 				},
 				async getProductsInBox(req, res) {
-								const {CombinationId} = req.body;
+								const {CombinationId} = req.query;
 								try {
 												const combinationProducts = await CombinationProduct.findAll({where: {
 																				CombinationId
@@ -41,7 +41,7 @@ const OrderController = {
 																where: {
 																				id: productIds
 																},
-																attributes: ["product_name", "description"]
+																attributes: ["id", "product_name", "description"]
 												});
 												res.send({message: "Products in combination box", products});
 								} catch (error) {
